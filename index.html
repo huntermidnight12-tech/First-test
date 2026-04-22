@@ -1,0 +1,2047 @@
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+  <meta name="theme-color" content="#0f172a" />
+
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
+  <meta name="apple-mobile-web-app-title" content="مقارن الأسعار" />
+
+  <title>مقارن الأسعار بالباركود</title>
+
+  <link rel="manifest" href="manifest.json" />
+
+  <style>
+
+    :root {
+
+      --bg: #f8fafc;
+
+      --card: #ffffff;
+
+      --text: #0f172a;
+
+      --muted: #475569;
+
+      --line: #e2e8f0;
+
+      --primary: #0f766e;
+
+      --primary-2: #14b8a6;
+
+      --danger: #b91c1c;
+
+      --warn: #a16207;
+
+      --success: #166534;
+
+      --soft-success: #f0fdf4;
+
+      --soft-warn: #fff7ed;
+
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+
+      --radius: 18px;
+
+    }
+
+
+
+    * { box-sizing: border-box; }
+
+
+
+    body {
+
+      margin: 0;
+
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Tahoma, Arial, sans-serif;
+
+      background: linear-gradient(180deg, #eef6f6 0%, var(--bg) 180px);
+
+      color: var(--text);
+
+    }
+
+
+
+    .wrap {
+
+      max-width: 1100px;
+
+      margin: 0 auto;
+
+      padding: 18px 14px 80px;
+
+    }
+
+
+
+    .hero {
+
+      background: linear-gradient(135deg, #0f172a, #134e4a);
+
+      color: #fff;
+
+      border-radius: 24px;
+
+      padding: 20px;
+
+      box-shadow: var(--shadow);
+
+      margin-bottom: 16px;
+
+    }
+
+
+
+    .hero h1 {
+
+      margin: 0 0 8px;
+
+      font-size: 1.6rem;
+
+    }
+
+
+
+    .hero p {
+
+      margin: 0;
+
+      line-height: 1.8;
+
+      opacity: .95;
+
+    }
+
+
+
+    .note {
+
+      margin-top: 12px;
+
+      padding: 10px 12px;
+
+      border-radius: 12px;
+
+      background: rgba(255,255,255,.12);
+
+      font-size: .95rem;
+
+    }
+
+
+
+    .grid {
+
+      display: grid;
+
+      grid-template-columns: 1.08fr .92fr;
+
+      gap: 16px;
+
+    }
+
+
+
+    .card {
+
+      background: var(--card);
+
+      border: 1px solid var(--line);
+
+      border-radius: var(--radius);
+
+      box-shadow: var(--shadow);
+
+      padding: 16px;
+
+    }
+
+
+
+    .card h2 {
+
+      margin: 0 0 12px;
+
+      font-size: 1.12rem;
+
+    }
+
+
+
+    .fields {
+
+      display: grid;
+
+      gap: 12px;
+
+    }
+
+
+
+    label {
+
+      display: block;
+
+      font-weight: 600;
+
+      margin-bottom: 6px;
+
+    }
+
+
+
+    input, select, button, textarea {
+
+      font: inherit;
+
+    }
+
+
+
+    input, textarea {
+
+      width: 100%;
+
+      border: 1px solid #cbd5e1;
+
+      border-radius: 12px;
+
+      padding: 12px 14px;
+
+      background: #fff;
+
+      color: var(--text);
+
+    }
+
+
+
+    input:focus, textarea:focus {
+
+      outline: 3px solid rgba(20, 184, 166, .18);
+
+      border-color: var(--primary-2);
+
+    }
+
+
+
+    button {
+
+      border: none;
+
+      border-radius: 12px;
+
+      padding: 12px 16px;
+
+      cursor: pointer;
+
+      font-weight: 700;
+
+    }
+
+
+
+    .actions, .inline-actions, .footer-tools {
+
+      display: flex;
+
+      flex-wrap: wrap;
+
+      gap: 10px;
+
+    }
+
+
+
+    .primary { background: var(--primary); color: #fff; }
+
+    .secondary { background: #e2e8f0; color: var(--text); }
+
+    .danger { background: #fee2e2; color: var(--danger); }
+
+    .ghost {
+
+      background: #f1f5f9;
+
+      color: var(--text);
+
+      border: 1px solid var(--line);
+
+    }
+
+
+
+    .status {
+
+      margin-top: 12px;
+
+      padding: 12px;
+
+      border-radius: 12px;
+
+      background: #f8fafc;
+
+      border: 1px dashed #cbd5e1;
+
+      color: var(--muted);
+
+      min-height: 46px;
+
+      line-height: 1.7;
+
+    }
+
+
+
+    .scan-box {
+
+      margin-top: 12px;
+
+      border-radius: 18px;
+
+      overflow: hidden;
+
+      border: 1px solid var(--line);
+
+      background: #0f172a;
+
+      display: none;
+
+    }
+
+
+
+    #reader {
+
+      width: 100%;
+
+      min-height: 280px;
+
+      background: #000;
+
+    }
+
+
+
+    .hint-box {
+
+      margin-top: 12px;
+
+      padding: 12px;
+
+      border-radius: 14px;
+
+      background: var(--soft-warn);
+
+      border: 1px solid #fed7aa;
+
+      color: #9a3412;
+
+      line-height: 1.8;
+
+      display: none;
+
+    }
+
+
+
+    .pill {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 6px;
+
+      background: #ecfeff;
+
+      color: #155e75;
+
+      padding: 6px 10px;
+
+      border-radius: 999px;
+
+      font-size: .9rem;
+
+      margin-bottom: 10px;
+
+    }
+
+
+
+    .search-row {
+
+      display: grid;
+
+      grid-template-columns: 1fr auto;
+
+      gap: 10px;
+
+    }
+
+
+
+    .result-header {
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: start;
+
+      gap: 10px;
+
+      flex-wrap: wrap;
+
+      margin-bottom: 10px;
+
+    }
+
+
+
+    .price-tag {
+
+      background: #dcfce7;
+
+      color: var(--success);
+
+      padding: 8px 12px;
+
+      border-radius: 12px;
+
+      font-weight: 800;
+
+    }
+
+
+
+    .stats-row {
+
+      display: grid;
+
+      grid-template-columns: repeat(3, 1fr);
+
+      gap: 10px;
+
+      margin: 12px 0;
+
+    }
+
+
+
+    .stat {
+
+      border: 1px solid var(--line);
+
+      border-radius: 14px;
+
+      padding: 12px;
+
+      background: #fff;
+
+    }
+
+
+
+    .stat strong {
+
+      display: block;
+
+      margin-top: 6px;
+
+      font-size: 1rem;
+
+    }
+
+
+
+    .list {
+
+      display: grid;
+
+      gap: 10px;
+
+      margin-top: 12px;
+
+    }
+
+
+
+    .item {
+
+      border: 1px solid var(--line);
+
+      border-radius: 14px;
+
+      padding: 12px;
+
+      background: #fff;
+
+    }
+
+
+
+    .item h3 {
+
+      margin: 0 0 6px;
+
+      font-size: 1rem;
+
+    }
+
+
+
+    .meta {
+
+      color: var(--muted);
+
+      line-height: 1.7;
+
+      font-size: .96rem;
+
+    }
+
+
+
+    .best {
+
+      border-color: #86efac;
+
+      background: var(--soft-success);
+
+    }
+
+
+
+    .editing {
+
+      border-color: #67e8f9;
+
+      background: #ecfeff;
+
+    }
+
+
+
+    .empty {
+
+      color: var(--muted);
+
+      text-align: center;
+
+      padding: 18px;
+
+      border: 1px dashed var(--line);
+
+      border-radius: 14px;
+
+      background: #fff;
+
+    }
+
+
+
+    .small {
+
+      font-size: .92rem;
+
+      color: var(--muted);
+
+    }
+
+
+
+    .hidden {
+
+      display: none !important;
+
+    }
+
+
+
+    .split {
+
+      display: grid;
+
+      grid-template-columns: 1fr 1fr;
+
+      gap: 12px;
+
+    }
+
+
+
+    .file-label {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      cursor: pointer;
+
+    }
+
+
+
+    @media (max-width: 860px) {
+
+      .grid { grid-template-columns: 1fr; }
+
+      .search-row { grid-template-columns: 1fr; }
+
+      .stats-row { grid-template-columns: 1fr; }
+
+      .split { grid-template-columns: 1fr; }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <div class="wrap">
+
+    <section class="hero">
+
+      <h1>تطبيق مقارن الأسعار بالباركود</h1>
+
+      <p>أدخل اسم المنتج، مكان البيع، السعر، ثم اربط كل ذلك بالباركود. وعند مسح الباركود لاحقًا يعرض التطبيق كل المتاجر والأسعار ويحدد الأرخص مباشرة.</p>
+
+      <div class="note">
+
+        على iPhone يجب تشغيل الصفحة عبر <strong>HTTPS</strong> أو <strong>localhost</strong> حتى تعمل الكاميرا.
+
+        وعند أول استخدام للمسح سيطلب Safari إذن الكاميرا.
+
+      </div>
+
+    </section>
+
+
+
+    <div class="grid">
+
+      <section class="card">
+
+        <h2 id="formTitle">إضافة منتج / سعر جديد</h2>
+
+
+
+        <div class="fields">
+
+          <div>
+
+            <label for="productName">اسم المنتج</label>
+
+            <input id="productName" type="text" placeholder="مثال: نوتيلا 750 جم" />
+
+          </div>
+
+
+
+          <div>
+
+            <label for="barcode">الباركود</label>
+
+            <input id="barcode" type="text" inputmode="numeric" placeholder="يمكن إدخاله يدويًا أو عبر المسح أو من صورة" />
+
+          </div>
+
+
+
+          <div class="inline-actions">
+
+            <button class="primary" id="scanForInputBtn" type="button">مسح الباركود للإدخال</button>
+
+            <label class="secondary file-label">
+
+              رفع صورة باركود
+
+              <input id="barcodeImageInput" type="file" accept="image/*" hidden />
+
+            </label>
+
+            <button class="secondary" id="stopScanBtn" type="button">إيقاف المسح</button>
+
+          </div>
+
+
+
+          <div class="scan-box" id="scanBox">
+
+            <div id="reader"></div>
+
+          </div>
+
+
+
+          <div class="hint-box" id="manualHint">
+
+            إذا تعذر مسح الباركود، اكتب الرقم الظاهر أسفل الباركود يدويًا في خانة الباركود.
+
+            ويمكنك أيضًا رفع صورة واضحة للباركود ومحاولة استخراج الرقم منها تلقائيًا.
+
+          </div>
+
+
+
+          <div class="split">
+
+            <div>
+
+              <label for="storeName">مكان البيع / المتجر</label>
+
+              <input id="storeName" type="text" placeholder="مثال: بنده - فرع الحوية" />
+
+            </div>
+
+
+
+            <div>
+
+              <label for="price">السعر</label>
+
+              <input id="price" type="number" step="0.01" min="0" placeholder="مثال: 30" />
+
+            </div>
+
+          </div>
+
+
+
+          <div>
+
+            <label for="notes">ملاحظات اختيارية</label>
+
+            <textarea id="notes" rows="3" placeholder="مثال: عرض لمدة أسبوع"></textarea>
+
+          </div>
+
+
+
+          <div class="actions">
+
+            <button class="primary" id="saveBtn" type="button">حفظ المنتج</button>
+
+            <button class="secondary hidden" id="updateBtn" type="button">حفظ التعديل</button>
+
+            <button class="ghost" id="cancelEditBtn" type="button">إلغاء التعديل</button>
+
+            <button class="ghost" id="clearFormBtn" type="button">تفريغ الحقول</button>
+
+          </div>
+
+        </div>
+
+
+
+        <div id="status" class="status">جاهز.</div>
+
+      </section>
+
+
+
+      <section class="card">
+
+        <h2>البحث والمقارنة</h2>
+
+
+
+        <div class="pill">امسح الباركود أو اكتب الرقم الظاهر يدويًا للمقارنة</div>
+
+
+
+        <div class="fields">
+
+          <div>
+
+            <label for="searchBarcode">البحث بالباركود</label>
+
+            <div class="search-row">
+
+              <input id="searchBarcode" type="text" inputmode="numeric" placeholder="أدخل أو امسح الباركود هنا" />
+
+              <div class="actions">
+
+                <button class="primary" id="scanSearchBtn" type="button">مسح للمقارنة</button>
+
+                <button class="secondary" id="findBtn" type="button">عرض النتائج</button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+          <div>
+
+            <label for="searchName">البحث باسم المنتج</label>
+
+            <div class="search-row">
+
+              <input id="searchName" type="text" placeholder="مثال: نوتيلا" />
+
+              <div class="actions">
+
+                <button class="secondary" id="findByNameBtn" type="button">بحث بالاسم</button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="small" style="margin-top:10px;">
+
+          إذا لم ينجح المسح، اكتب الرقم المطبوع أسفل الباركود.
+
+          سيتم ترتيب النتائج من الأرخص إلى الأعلى سعراً، مع إبراز أقل سعر وإظهار ملخص سريع للأسعار.
+
+        </div>
+
+
+
+        <div id="results" class="list"></div>
+
+      </section>
+
+    </div>
+
+
+
+    <section class="card" style="margin-top:16px;">
+
+      <div class="result-header">
+
+        <div>
+
+          <h2 style="margin-bottom:6px;">كل البيانات المحفوظة</h2>
+
+          <div class="small">التخزين محلي على نفس الجهاز باستخدام المتصفح. يمكنك التصدير والاستيراد عند الحاجة.</div>
+
+        </div>
+
+
+
+        <div class="footer-tools">
+
+          <button class="secondary" id="exportBtn" type="button">تصدير JSON</button>
+
+          <label class="secondary file-label">
+
+            استيراد JSON
+
+            <input id="importFile" type="file" accept="application/json" hidden />
+
+          </label>
+
+          <button class="danger" id="wipeBtn" type="button">حذف جميع البيانات</button>
+
+        </div>
+
+      </div>
+
+
+
+      <div id="allItems" class="list"></div>
+
+    </section>
+
+  </div>
+
+
+
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
+  <script>
+
+    const STORAGE_KEY = "barcode_price_compare_v2";
+
+
+
+    const state = {
+
+      products: [],
+
+      scanner: null,
+
+      scanningMode: null,
+
+      isScanning: false,
+
+      editingIndex: null
+
+    };
+
+
+
+    const els = {
+
+      productName: document.getElementById('productName'),
+
+      barcode: document.getElementById('barcode'),
+
+      storeName: document.getElementById('storeName'),
+
+      price: document.getElementById('price'),
+
+      notes: document.getElementById('notes'),
+
+      status: document.getElementById('status'),
+
+      searchBarcode: document.getElementById('searchBarcode'),
+
+      searchName: document.getElementById('searchName'),
+
+      results: document.getElementById('results'),
+
+      allItems: document.getElementById('allItems'),
+
+      scanBox: document.getElementById('scanBox'),
+
+      reader: document.getElementById('reader'),
+
+      manualHint: document.getElementById('manualHint'),
+
+      formTitle: document.getElementById('formTitle'),
+
+      saveBtn: document.getElementById('saveBtn'),
+
+      updateBtn: document.getElementById('updateBtn'),
+
+      cancelEditBtn: document.getElementById('cancelEditBtn'),
+
+      barcodeImageInput: document.getElementById('barcodeImageInput')
+
+    };
+
+
+
+    function setStatus(message, tone = 'normal') {
+
+      els.status.textContent = message;
+
+      els.status.style.borderColor = tone === 'error' ? '#fecaca' : tone === 'success' ? '#86efac' : '#cbd5e1';
+
+      els.status.style.background = tone === 'error' ? '#fef2f2' : tone === 'success' ? '#f0fdf4' : '#f8fafc';
+
+      els.status.style.color = tone === 'error' ? '#991b1b' : tone === 'success' ? '#166534' : '#475569';
+
+    }
+
+
+
+    function showManualHint(show = true) {
+
+      els.manualHint.style.display = show ? 'block' : 'none';
+
+    }
+
+
+
+    function loadProducts() {
+
+      try {
+
+        state.products = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+      } catch {
+
+        state.products = [];
+
+      }
+
+    }
+
+
+
+    function saveProducts() {
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state.products));
+
+    }
+
+
+
+    function clearForm() {
+
+      els.productName.value = '';
+
+      els.barcode.value = '';
+
+      els.storeName.value = '';
+
+      els.price.value = '';
+
+      els.notes.value = '';
+
+    }
+
+
+
+    function resetEditMode() {
+
+      state.editingIndex = null;
+
+      els.formTitle.textContent = 'إضافة منتج / سعر جديد';
+
+      els.saveBtn.classList.remove('hidden');
+
+      els.updateBtn.classList.add('hidden');
+
+      clearForm();
+
+    }
+
+
+
+    function currency(value) {
+
+      const n = Number(value);
+
+      if (Number.isNaN(n)) return value;
+
+      return new Intl.NumberFormat('ar-SA', { style: 'currency', currency: 'SAR' }).format(n);
+
+    }
+
+
+
+    function normalizeBarcode(code) {
+
+      return String(code || '').trim();
+
+    }
+
+
+
+    function normalizeText(text) {
+
+      return String(text || '').trim().toLowerCase();
+
+    }
+
+
+
+    function escapeHtml(text) {
+
+      return String(text)
+
+        .replace(/&/g, '&amp;')
+
+        .replace(/</g, '&lt;')
+
+        .replace(/>/g, '&gt;')
+
+        .replace(/"/g, '&quot;')
+
+        .replace(/'/g, '&#039;');
+
+    }
+
+
+
+    function renderAllItems() {
+
+      if (!state.products.length) {
+
+        els.allItems.innerHTML = '<div class="empty">لا توجد بيانات محفوظة حتى الآن.</div>';
+
+        return;
+
+      }
+
+
+
+      els.allItems.innerHTML = state.products
+
+        .map((item, index) => `
+
+          <div class="item ${state.editingIndex === index ? 'editing' : ''}">
+
+            <h3>${escapeHtml(item.productName)}</h3>
+
+            <div class="meta">
+
+              الباركود: ${escapeHtml(item.barcode)}<br>
+
+              المتجر: ${escapeHtml(item.storeName)}<br>
+
+              السعر: ${currency(item.price)}
+
+              ${item.notes ? `<br>ملاحظات: ${escapeHtml(item.notes)}` : ''}
+
+            </div>
+
+            <div class="inline-actions" style="margin-top:10px;">
+
+              <button class="secondary" onclick="editItem(${index})">تعديل</button>
+
+              <button class="danger" onclick="removeItem(${index})">حذف</button>
+
+            </div>
+
+          </div>
+
+        `).join('');
+
+    }
+
+
+
+    function groupByBarcode(barcode) {
+
+      const normalized = normalizeBarcode(barcode);
+
+      return state.products
+
+        .filter(item => normalizeBarcode(item.barcode) === normalized)
+
+        .sort((a, b) => Number(a.price) - Number(b.price));
+
+    }
+
+
+
+    function searchByName(name) {
+
+      const q = normalizeText(name);
+
+      return state.products.filter(item =>
+
+        normalizeText(item.productName).includes(q)
+
+      );
+
+    }
+
+
+
+    function calculateStats(matches) {
+
+      if (!matches.length) return null;
+
+
+
+      const prices = matches.map(item => Number(item.price)).filter(n => !Number.isNaN(n));
+
+      if (!prices.length) return null;
+
+
+
+      const min = Math.min(...prices);
+
+      const max = Math.max(...prices);
+
+      const avg = prices.reduce((a, b) => a + b, 0) / prices.length;
+
+
+
+      return { min, max, avg };
+
+    }
+
+
+
+    function renderStats(stats) {
+
+      if (!stats) return '';
+
+      return `
+
+        <div class="stats-row">
+
+          <div class="stat">
+
+            أقل سعر
+
+            <strong>${currency(stats.min)}</strong>
+
+          </div>
+
+          <div class="stat">
+
+            أعلى سعر
+
+            <strong>${currency(stats.max)}</strong>
+
+          </div>
+
+          <div class="stat">
+
+            متوسط السعر
+
+            <strong>${currency(stats.avg)}</strong>
+
+          </div>
+
+        </div>
+
+      `;
+
+    }
+
+
+
+    function renderResults(barcode) {
+
+      const normalized = normalizeBarcode(barcode);
+
+
+
+      if (!normalized) {
+
+        els.results.innerHTML = '<div class="empty">أدخل الباركود أو امسحه أولاً.</div>';
+
+        return;
+
+      }
+
+
+
+      const matches = groupByBarcode(normalized);
+
+
+
+      if (!matches.length) {
+
+        els.results.innerHTML = `<div class="empty">لا توجد نتائج للباركود: <strong>${escapeHtml(normalized)}</strong></div>`;
+
+        return;
+
+      }
+
+
+
+      const best = matches[0];
+
+      const title = best.productName || 'منتج غير مسمى';
+
+      const stats = calculateStats(matches);
+
+
+
+      els.results.innerHTML = `
+
+        <div class="item best">
+
+          <div class="result-header">
+
+            <div>
+
+              <h3 style="margin:0 0 6px;">${escapeHtml(title)}</h3>
+
+              <div class="meta">
+
+                الباركود: ${escapeHtml(normalized)}<br>
+
+                أقل سعر لدى: ${escapeHtml(best.storeName)}
+
+              </div>
+
+            </div>
+
+            <div class="price-tag">${currency(best.price)}</div>
+
+          </div>
+
+        </div>
+
+
+
+        ${renderStats(stats)}
+
+
+
+        ${matches.map((item, idx) => `
+
+          <div class="item ${idx === 0 ? 'best' : ''}">
+
+            <h3>${escapeHtml(item.storeName)}</h3>
+
+            <div class="meta">
+
+              السعر: ${currency(item.price)}
+
+              ${item.notes ? `<br>ملاحظات: ${escapeHtml(item.notes)}` : ''}
+
+            </div>
+
+          </div>
+
+        `).join('')}
+
+      `;
+
+    }
+
+
+
+    function renderNameResults(name) {
+
+      const q = normalizeText(name);
+
+
+
+      if (!q) {
+
+        els.results.innerHTML = '<div class="empty">اكتب اسم المنتج أولاً.</div>';
+
+        return;
+
+      }
+
+
+
+      const matches = searchByName(q);
+
+
+
+      if (!matches.length) {
+
+        els.results.innerHTML = `<div class="empty">لا توجد نتائج لاسم المنتج: <strong>${escapeHtml(name)}</strong></div>`;
+
+        return;
+
+      }
+
+
+
+      els.results.innerHTML = matches
+
+        .sort((a, b) => Number(a.price) - Number(b.price))
+
+        .map((item, idx) => `
+
+          <div class="item ${idx === 0 ? 'best' : ''}">
+
+            <h3>${escapeHtml(item.productName)}</h3>
+
+            <div class="meta">
+
+              الباركود: ${escapeHtml(item.barcode)}<br>
+
+              المتجر: ${escapeHtml(item.storeName)}<br>
+
+              السعر: ${currency(item.price)}
+
+              ${item.notes ? `<br>ملاحظات: ${escapeHtml(item.notes)}` : ''}
+
+            </div>
+
+          </div>
+
+        `).join('');
+
+    }
+
+
+
+    async function stopScanner() {
+
+      if (state.scanner && state.isScanning) {
+
+        try {
+
+          await state.scanner.stop();
+
+        } catch (e) {
+
+          console.warn('Stop scanner warning:', e);
+
+        }
+
+      }
+
+
+
+      if (state.scanner) {
+
+        try {
+
+          await state.scanner.clear();
+
+        } catch (e) {
+
+          console.warn('Clear scanner warning:', e);
+
+        }
+
+      }
+
+
+
+      state.isScanning = false;
+
+      state.scanner = null;
+
+      state.scanningMode = null;
+
+      els.scanBox.style.display = 'none';
+
+    }
+
+
+
+    async function startScanner(mode) {
+
+      if (!window.Html5Qrcode) {
+
+        setStatus('تعذر تحميل مكتبة المسح. تحقق من الاتصال بالإنترنت.', 'error');
+
+        showManualHint(true);
+
+        return;
+
+      }
+
+
+
+      await stopScanner();
+
+      els.scanBox.style.display = 'block';
+
+      showManualHint(false);
+
+
+
+      state.scanningMode = mode;
+
+      state.scanner = new Html5Qrcode('reader', { verbose: false });
+
+
+
+      const formats = [
+
+        Html5QrcodeSupportedFormats.QR_CODE,
+
+        Html5QrcodeSupportedFormats.AZTEC,
+
+        Html5QrcodeSupportedFormats.CODABAR,
+
+        Html5QrcodeSupportedFormats.CODE_39,
+
+        Html5QrcodeSupportedFormats.CODE_93,
+
+        Html5QrcodeSupportedFormats.CODE_128,
+
+        Html5QrcodeSupportedFormats.DATA_MATRIX,
+
+        Html5QrcodeSupportedFormats.MAXICODE,
+
+        Html5QrcodeSupportedFormats.ITF,
+
+        Html5QrcodeSupportedFormats.EAN_13,
+
+        Html5QrcodeSupportedFormats.EAN_8,
+
+        Html5QrcodeSupportedFormats.PDF_417,
+
+        Html5QrcodeSupportedFormats.RSS_14,
+
+        Html5QrcodeSupportedFormats.RSS_EXPANDED,
+
+        Html5QrcodeSupportedFormats.UPC_A,
+
+        Html5QrcodeSupportedFormats.UPC_E,
+
+        Html5QrcodeSupportedFormats.UPC_EAN_EXTENSION
+
+      ];
+
+
+
+      const config = {
+
+        fps: 10,
+
+        qrbox: { width: 280, height: 160 },
+
+        aspectRatio: 1.777778,
+
+        formatsToSupport: formats,
+
+        experimentalFeatures: {
+
+          useBarCodeDetectorIfSupported: true
+
+        }
+
+      };
+
+
+
+      const onSuccess = async (decodedText) => {
+
+        const code = normalizeBarcode(decodedText);
+
+        if (!code) return;
+
+
+
+        if (mode === 'input') {
+
+          els.barcode.value = code;
+
+          setStatus(`تم التقاط الباركود: ${code}`, 'success');
+
+        } else {
+
+          els.searchBarcode.value = code;
+
+          setStatus(`تم مسح الباركود للمقارنة: ${code}`, 'success');
+
+          renderResults(code);
+
+        }
+
+
+
+        showManualHint(false);
+
+        await stopScanner();
+
+      };
+
+
+
+      const onError = () => {};
+
+
+
+      setStatus('جاري فتح الكاميرا الخلفية... عند ظهور طلب الإذن اضغط “سماح”.');
+
+
+
+      try {
+
+        await state.scanner.start({ facingMode: { exact: 'environment' } }, config, onSuccess, onError);
+
+        state.isScanning = true;
+
+      } catch (err1) {
+
+        try {
+
+          await state.scanner.start({ facingMode: 'environment' }, config, onSuccess, onError);
+
+          state.isScanning = true;
+
+        } catch (err2) {
+
+          console.error(err2);
+
+          setStatus('تعذر تشغيل الكاميرا أو قراءة الباركود. يمكنك كتابة الرقم الظاهر أسفل الباركود يدويًا أو رفع صورة واضحة.', 'error');
+
+          showManualHint(true);
+
+          await stopScanner();
+
+        }
+
+      }
+
+    }
+
+
+
+    async function tryDecodeBarcodeFromImage(file) {
+
+      if (!file) return;
+
+
+
+      if (!window.Html5Qrcode) {
+
+        setStatus('تعذر تحميل مكتبة قراءة الصورة.', 'error');
+
+        return;
+
+      }
+
+
+
+      const tempId = 'temp-image-reader';
+
+      let tempEl = document.getElementById(tempId);
+
+
+
+      if (!tempEl) {
+
+        tempEl = document.createElement('div');
+
+        tempEl.id = tempId;
+
+        tempEl.style.display = 'none';
+
+        document.body.appendChild(tempEl);
+
+      }
+
+
+
+      const reader = new Html5Qrcode(tempId);
+
+
+
+      setStatus('جاري محاولة قراءة الباركود من الصورة...');
+
+
+
+      try {
+
+        const result = await reader.scanFile(file, true);
+
+        const code = normalizeBarcode(result);
+
+
+
+        if (code) {
+
+          els.barcode.value = code;
+
+          els.searchBarcode.value = code;
+
+          setStatus(`تم استخراج الباركود من الصورة: ${code}`, 'success');
+
+          showManualHint(false);
+
+          return;
+
+        }
+
+
+
+        setStatus('لم يتم العثور على باركود واضح في الصورة. اكتب الرقم الظاهر يدويًا.', 'error');
+
+        showManualHint(true);
+
+      } catch (error) {
+
+        console.error(error);
+
+        setStatus('تعذر قراءة الباركود من الصورة. حاول بصورة أوضح أو اكتب الرقم يدويًا.', 'error');
+
+        showManualHint(true);
+
+      } finally {
+
+        try {
+
+          await reader.clear();
+
+        } catch {}
+
+        els.barcodeImageInput.value = '';
+
+      }
+
+    }
+
+
+
+    function validateForm() {
+
+      const productName = els.productName.value.trim();
+
+      const barcode = normalizeBarcode(els.barcode.value);
+
+      const storeName = els.storeName.value.trim();
+
+      const price = Number(els.price.value);
+
+      const notes = els.notes.value.trim();
+
+
+
+      if (!productName || !barcode || !storeName || !els.price.value) {
+
+        setStatus('أكمل الحقول الأساسية: اسم المنتج، الباركود، المتجر، السعر.', 'error');
+
+        return null;
+
+      }
+
+
+
+      if (Number.isNaN(price) || price < 0) {
+
+        setStatus('أدخل سعراً صحيحاً.', 'error');
+
+        return null;
+
+      }
+
+
+
+      return {
+
+        productName,
+
+        barcode,
+
+        storeName,
+
+        price,
+
+        notes
+
+      };
+
+    }
+
+
+
+    function addProduct() {
+
+      const data = validateForm();
+
+      if (!data) return;
+
+
+
+      state.products.push({
+
+        ...data,
+
+        createdAt: new Date().toISOString()
+
+      });
+
+
+
+      saveProducts();
+
+      renderAllItems();
+
+      renderResults(data.barcode);
+
+      setStatus('تم حفظ المنتج بنجاح.', 'success');
+
+      clearForm();
+
+    }
+
+
+
+    function updateProduct() {
+
+      if (state.editingIndex === null) {
+
+        setStatus('لا يوجد سجل قيد التعديل.', 'error');
+
+        return;
+
+      }
+
+
+
+      const data = validateForm();
+
+      if (!data) return;
+
+
+
+      const existing = state.products[state.editingIndex] || {};
+
+
+
+      state.products[state.editingIndex] = {
+
+        ...existing,
+
+        ...data,
+
+        updatedAt: new Date().toISOString()
+
+      };
+
+
+
+      saveProducts();
+
+      renderAllItems();
+
+      renderResults(data.barcode);
+
+      setStatus('تم تحديث السجل بنجاح.', 'success');
+
+      resetEditMode();
+
+    }
+
+
+
+    function removeItem(index) {
+
+      state.products.splice(index, 1);
+
+      saveProducts();
+
+      renderAllItems();
+
+
+
+      const currentCode = normalizeBarcode(els.searchBarcode.value);
+
+      if (currentCode) renderResults(currentCode);
+
+
+
+      setStatus('تم حذف السجل.', 'success');
+
+
+
+      if (state.editingIndex === index) {
+
+        resetEditMode();
+
+      }
+
+    }
+
+
+
+    function editItem(index) {
+
+      const item = state.products[index];
+
+      if (!item) return;
+
+
+
+      state.editingIndex = index;
+
+      els.formTitle.textContent = 'تعديل سجل موجود';
+
+      els.saveBtn.classList.add('hidden');
+
+      els.updateBtn.classList.remove('hidden');
+
+
+
+      els.productName.value = item.productName || '';
+
+      els.barcode.value = item.barcode || '';
+
+      els.storeName.value = item.storeName || '';
+
+      els.price.value = item.price ?? '';
+
+      els.notes.value = item.notes || '';
+
+
+
+      renderAllItems();
+
+      setStatus('يمكنك الآن تعديل السجل ثم الضغط على "حفظ التعديل".');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    }
+
+
+
+    window.removeItem = removeItem;
+
+    window.editItem = editItem;
+
+
+
+    function exportData() {
+
+      const blob = new Blob([JSON.stringify(state.products, null, 2)], { type: 'application/json' });
+
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+
+      a.href = url;
+
+      a.download = 'barcode-price-data.json';
+
+      a.click();
+
+      URL.revokeObjectURL(url);
+
+      setStatus('تم تصدير البيانات.', 'success');
+
+    }
+
+
+
+    function importData(file) {
+
+      if (!file) return;
+
+
+
+      const reader = new FileReader();
+
+      reader.onload = () => {
+
+        try {
+
+          const imported = JSON.parse(reader.result);
+
+          if (!Array.isArray(imported)) throw new Error('Invalid');
+
+
+
+          state.products = imported;
+
+          saveProducts();
+
+          renderAllItems();
+
+
+
+          const currentCode = normalizeBarcode(els.searchBarcode.value);
+
+          if (currentCode) renderResults(currentCode);
+
+
+
+          setStatus('تم استيراد البيانات بنجاح.', 'success');
+
+        } catch {
+
+          setStatus('ملف JSON غير صالح.', 'error');
+
+        }
+
+      };
+
+
+
+      reader.readAsText(file, 'utf-8');
+
+    }
+
+
+
+    function wipeData() {
+
+      if (!confirm('هل تريد حذف جميع البيانات المحفوظة؟')) return;
+
+
+
+      state.products = [];
+
+      saveProducts();
+
+      renderAllItems();
+
+      els.results.innerHTML = '<div class="empty">لا توجد نتائج الآن.</div>';
+
+      resetEditMode();
+
+      setStatus('تم حذف جميع البيانات.', 'success');
+
+    }
+
+
+
+    document.getElementById('saveBtn').addEventListener('click', addProduct);
+
+    document.getElementById('updateBtn').addEventListener('click', updateProduct);
+
+    document.getElementById('cancelEditBtn').addEventListener('click', () => {
+
+      resetEditMode();
+
+      setStatus('تم إلغاء التعديل.');
+
+    });
+
+
+
+    document.getElementById('clearFormBtn').addEventListener('click', clearForm);
+
+
+
+    document.getElementById('scanForInputBtn').addEventListener('click', () => startScanner('input'));
+
+    document.getElementById('scanSearchBtn').addEventListener('click', () => startScanner('search'));
+
+
+
+    document.getElementById('stopScanBtn').addEventListener('click', async () => {
+
+      await stopScanner();
+
+      showManualHint(true);
+
+      setStatus('تم إيقاف المسح. يمكنك كتابة الرقم الظاهر أسفل الباركود يدويًا أو رفع صورة.');
+
+    });
+
+
+
+    document.getElementById('findBtn').addEventListener('click', () => renderResults(els.searchBarcode.value));
+
+    document.getElementById('findByNameBtn').addEventListener('click', () => renderNameResults(els.searchName.value));
+
+
+
+    document.getElementById('exportBtn').addEventListener('click', exportData);
+
+    document.getElementById('wipeBtn').addEventListener('click', wipeData);
+
+    document.getElementById('importFile').addEventListener('change', (e) => importData(e.target.files[0]));
+
+    document.getElementById('barcodeImageInput').addEventListener('change', (e) => tryDecodeBarcodeFromImage(e.target.files[0]));
+
+
+
+    loadProducts();
+
+    renderAllItems();
+
+    resetEditMode();
+
+    showManualHint(false);
+
+    els.results.innerHTML = '<div class="empty">امسح الباركود أو اكتبه لعرض المقارنة.</div>';
+
+
+
+    if ('serviceWorker' in navigator) {
+
+      window.addEventListener('load', () => {
+
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+
+      });
+
+    }
+
+  </script>
+
+</body>
+
+</html>
