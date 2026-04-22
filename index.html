@@ -70,6 +70,44 @@
 
       color: var(--text);
 
+      transition: background .25s ease, color .25s ease;
+
+    }
+
+
+
+    body.dark {
+
+      --bg: #020617;
+
+      --card: #0f172a;
+
+      --text: #e2e8f0;
+
+      --muted: #94a3b8;
+
+      --line: #334155;
+
+      --primary: #14b8a6;
+
+      --primary-2: #2dd4bf;
+
+      --danger: #f87171;
+
+      --warn: #f59e0b;
+
+      --success: #22c55e;
+
+      --soft-success: #052e16;
+
+      --soft-warn: #3b1d05;
+
+      --shadow: 0 10px 30px rgba(2, 6, 23, 0.45);
+
+      background: linear-gradient(180deg, #020617 0%, #0f172a 180px);
+
+      color: var(--text);
+
     }
 
 
@@ -81,6 +119,18 @@
       margin: 0 auto;
 
       padding: 18px 14px 80px;
+
+    }
+
+
+
+    .top-tools {
+
+      display: flex;
+
+      justify-content: flex-end;
+
+      margin-bottom: 12px;
 
     }
 
@@ -99,6 +149,14 @@
       box-shadow: var(--shadow);
 
       margin-bottom: 16px;
+
+    }
+
+
+
+    body.dark .hero {
+
+      background: linear-gradient(135deg, #0b1120, #115e59);
 
     }
 
@@ -166,6 +224,8 @@
 
       padding: 16px;
 
+      transition: background .25s ease, border-color .25s ease;
+
     }
 
 
@@ -224,6 +284,21 @@
 
       color: var(--text);
 
+      transition: background .25s ease, color .25s ease, border-color .25s ease;
+
+    }
+
+
+
+    body.dark input,
+    body.dark textarea {
+
+      background: #0b1220;
+
+      border-color: #334155;
+
+      color: var(--text);
+
     }
 
 
@@ -250,7 +325,14 @@
 
       font-weight: 700;
 
+      transition: transform .15s ease, opacity .2s ease, background .25s ease, color .25s ease, border-color .25s ease;
+
     }
+
+
+
+    button:hover { opacity: .96; }
+    button:active { transform: scale(.98); }
 
 
 
@@ -284,6 +366,29 @@
 
 
 
+    body.dark .secondary,
+    body.dark .ghost {
+
+      background: #1e293b;
+
+      color: var(--text);
+
+      border-color: var(--line);
+
+    }
+
+
+
+    body.dark .danger {
+
+      background: #3f1518;
+
+      color: #fecaca;
+
+    }
+
+
+
     .status {
 
       margin-top: 12px;
@@ -301,6 +406,18 @@
       min-height: 46px;
 
       line-height: 1.7;
+
+      transition: background .25s ease, border-color .25s ease, color .25s ease;
+
+    }
+
+
+
+    body.dark .status {
+
+      background: #0b1220;
+
+      border-color: #334155;
 
     }
 
@@ -358,6 +475,16 @@
 
 
 
+    body.dark .hint-box {
+
+      border-color: #7c2d12;
+
+      color: #fdba74;
+
+    }
+
+
+
     .pill {
 
       display: inline-flex;
@@ -377,6 +504,16 @@
       font-size: .9rem;
 
       margin-bottom: 10px;
+
+    }
+
+
+
+    body.dark .pill {
+
+      background: #082f49;
+
+      color: #bae6fd;
 
     }
 
@@ -428,6 +565,14 @@
 
 
 
+    body.dark .price-tag {
+
+      background: #052e16;
+
+    }
+
+
+
     .stats-row {
 
       display: grid;
@@ -452,6 +597,12 @@
 
       background: #fff;
 
+    }
+
+
+
+    body.dark .stat {
+      background: #0b1220;
     }
 
 
@@ -490,6 +641,14 @@
 
       background: #fff;
 
+      transition: background .25s ease, border-color .25s ease;
+
+    }
+
+
+
+    body.dark .item {
+      background: #0b1220;
     }
 
 
@@ -536,6 +695,12 @@
 
 
 
+    body.dark .editing {
+      background: #082f49;
+    }
+
+
+
     .empty {
 
       color: var(--muted);
@@ -550,6 +715,12 @@
 
       background: #fff;
 
+    }
+
+
+
+    body.dark .empty {
+      background: #0b1220;
     }
 
 
@@ -607,6 +778,8 @@
       .stats-row { grid-template-columns: 1fr; }
 
       .split { grid-template-columns: 1fr; }
+      .top-tools { justify-content: stretch; }
+      .top-tools button { width: 100%; }
 
     }
 
@@ -617,6 +790,10 @@
 <body>
 
   <div class="wrap">
+
+    <div class="top-tools">
+      <button class="ghost" id="themeToggleBtn" type="button">🌙 الوضع الليلي</button>
+    </div>
 
     <section class="hero">
 
@@ -879,6 +1056,7 @@
   <script>
 
     const STORAGE_KEY = "barcode_price_compare_v2";
+    const THEME_STORAGE_KEY = "barcode_price_theme";
 
 
 
@@ -892,7 +1070,8 @@
 
       isScanning: false,
 
-      editingIndex: null
+      editingIndex: null,
+      theme: 'light'
 
     };
 
@@ -934,11 +1113,38 @@
 
       cancelEditBtn: document.getElementById('cancelEditBtn'),
 
-      barcodeImageInput: document.getElementById('barcodeImageInput')
+      barcodeImageInput: document.getElementById('barcodeImageInput'),
+      themeToggleBtn: document.getElementById('themeToggleBtn')
 
     };
 
 
+
+    function applyTheme(theme) {
+      state.theme = theme === 'dark' ? 'dark' : 'light';
+      document.body.classList.toggle('dark', state.theme === 'dark');
+      document.querySelector('meta[name="theme-color"]')?.setAttribute('content', state.theme === 'dark' ? '#020617' : '#0f172a');
+      if (els.themeToggleBtn) {
+        els.themeToggleBtn.textContent = state.theme === 'dark' ? '☀️ الوضع النهاري' : '🌙 الوضع الليلي';
+      }
+      localStorage.setItem(THEME_STORAGE_KEY, state.theme);
+    }
+
+    function loadTheme() {
+      const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+      if (savedTheme === 'dark' || savedTheme === 'light') {
+        applyTheme(savedTheme);
+        return;
+      }
+
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      applyTheme(prefersDark ? 'dark' : 'light');
+    }
+
+    function toggleTheme() {
+      applyTheme(state.theme === 'dark' ? 'light' : 'dark');
+      setStatus(state.theme === 'dark' ? 'تم تفعيل الوضع الليلي.' : 'تم تفعيل الوضع النهاري.', 'success');
+    }
 
     function setStatus(message, tone = 'normal') {
 
@@ -1056,7 +1262,7 @@
 
         .replace(/>/g, '&gt;')
 
-        .replace(/"/g, '&quot;')
+        .replace(/\"/g, '&quot;')
 
         .replace(/'/g, '&#039;');
 
@@ -1981,6 +2187,7 @@
 
 
     document.getElementById('clearFormBtn').addEventListener('click', clearForm);
+    document.getElementById('themeToggleBtn').addEventListener('click', toggleTheme);
 
 
 
@@ -2019,13 +2226,10 @@
 
 
     loadProducts();
-
+    loadTheme();
     renderAllItems();
-
     resetEditMode();
-
     showManualHint(false);
-
     els.results.innerHTML = '<div class="empty">امسح الباركود أو اكتبه لعرض المقارنة.</div>';
 
 
